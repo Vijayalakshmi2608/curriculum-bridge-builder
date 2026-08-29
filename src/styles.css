@@ -19,6 +19,15 @@
  */
 
 @theme inline {
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-vermilion: var(--vermilion);
+  --color-cobalt: var(--cobalt);
+  --color-mustard: var(--mustard);
+  --color-sage: var(--sage);
+  --font-grotesk: "Archivo", sans-serif;
+  --font-body: "Space Grotesk", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -26,6 +35,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -141,4 +151,68 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+/* ── Repurpose: Bauhaus grid design system ───────────────────── */
+:root {
+  --radius: 0px;
+  --paper: oklch(0.947 0.021 82.5);
+  --panel: oklch(0.973 0.011 85);
+  --ink: oklch(0.185 0.008 75);
+  --vermilion: oklch(0.601 0.213 32.4);
+  --cobalt: oklch(0.383 0.183 267.6);
+  --mustard: oklch(0.762 0.146 74.6);
+  --sage: oklch(0.485 0.096 156.8);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--panel);
+  --card-foreground: var(--ink);
+  --popover: var(--panel);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--panel);
+  --secondary-foreground: var(--ink);
+  --muted: var(--panel);
+  --muted-foreground: oklch(0.185 0.008 75 / 55%);
+  --accent: var(--mustard);
+  --accent-foreground: var(--ink);
+  --destructive: var(--vermilion);
+  --destructive-foreground: var(--paper);
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--cobalt);
+}
+
+@layer base {
+  body {
+    font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--vermilion) 25%, transparent);
+  }
+}
+
+@keyframes rp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@utility rp-spin {
+  animation: rp-spin 1s linear infinite;
+}
+@utility rp-rise {
+  animation: rp-rise 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
