@@ -26,6 +26,9 @@ export const Route = createFileRoute("/")({
   component: RepurposePage,
 });
 
+const shortGrade = (g: string) => g.split(" · ")[0] ?? g;
+const shortLang = (l: string) => l.split(" (")[0] ?? l;
+
 const GRADES = [
   "Grade 5 · Reading level A2",
   "Grade 6 · Reading level A2+",
@@ -93,8 +96,8 @@ function Field({
   );
 }
 
-function Highlighted({ text, highlights }: { text: string; highlights?: string[] }) {
-  const terms = (highlights ?? []).filter((h) => h && text.includes(h));
+function Highlighted({ text, highlights }: { text: string; highlights: string[] }) {
+  const terms = highlights.filter((h) => h && text.includes(h));
   if (terms.length === 0) return <>{text}</>;
   const pattern = new RegExp(
     `(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
@@ -156,8 +159,8 @@ function RepurposePage() {
 
   const [sourceText, setSourceText] = useState(DEMO_EXCERPT);
   const [sourceName, setSourceName] = useState(DEMO_SOURCE_NAME);
-  const [grade, setGrade] = useState(GRADES[3]);
-  const [language, setLanguage] = useState(LANGUAGES[1]);
+  const [grade, setGrade] = useState<string>(GRADES[3]!);
+  const [language, setLanguage] = useState<string>(LANGUAGES[1]!);
   const [pasting, setPasting] = useState(false);
   const [stage, setStage] = useState<Stage>(0);
   const [busy, setBusy] = useState(false);
@@ -281,13 +284,13 @@ function RepurposePage() {
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-paper/60 text-sm">Target grade</span>
                   <span className="font-grotesk text-mustard text-2xl font-bold">
-                    {grade.split(" · ")[0]}
+                    {shortGrade(grade)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-paper/60 text-sm">Language</span>
                   <span className="font-grotesk text-vermilion text-right text-xl font-bold">
-                    {language.split(" (")[0]}
+                    {shortLang(language)}
                   </span>
                 </div>
               </div>
@@ -436,7 +439,7 @@ function RepurposePage() {
                 {
                   n: 2,
                   title: "Rewrite & translate",
-                  sub: `${grade.split(" · ")[0]} · ${language.split(" (")[0]}`,
+                  sub: `${shortGrade(grade)} · ${shortLang(language)}`,
                   active: stage >= 2,
                 },
                 {
@@ -502,7 +505,7 @@ function RepurposePage() {
                   Rewrite + Gaps
                 </span>
                 <span className="text-paper/70 text-[11px] tracking-[0.15em] uppercase">
-                  {language.split(" (")[0]} · {grade.split(" · ")[0]}
+                  {shortLang(language)} · {shortGrade(grade)}
                 </span>
               </div>
               <div className="space-y-4 p-6 text-[15px] leading-relaxed text-ink/85">
@@ -547,7 +550,7 @@ function RepurposePage() {
                         );
                       return (
                         <p key={i}>
-                          <Highlighted text={b.text} highlights={b.highlights} />
+                          <Highlighted text={b.text} highlights={b.highlights ?? []} />
                         </p>
                       );
                     })}
