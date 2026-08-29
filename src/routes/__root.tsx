@@ -90,6 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Rewrite textbook pages to a new grade level and language, with curriculum gaps flagged and bridge lessons generated.",
       },
+      { property: "og:type", content: "website" },
 
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
